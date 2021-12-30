@@ -1,0 +1,15 @@
+{
+  "name": "back-2",
+  "version": "0.0.1",
+  "description": "https://en.wikipedia.org/wiki/N-back",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "n-back"
+  ],
+  "author": "gor2991@ya.ru",
+  "license": "MIT",
+  "dependencies": {}
+}
