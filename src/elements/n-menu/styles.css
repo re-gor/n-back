@@ -1,0 +1,9 @@
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu .menu__play {
+    margin-top: 10px;
+    height: 55px;
+}

@@ -1,0 +1,73 @@
+<div class='stat'>
+    <link rel="stylesheet" type="text/css" href="{{baseUrl}}/styles.css" />
+    
+    <form>
+        <table>
+            <tbody>
+                <tr>
+                    <td>N</td>
+                    <td><input type="number" min="1" max="15" name="n" required /></td>
+                </tr>
+                <tr>
+                    <td>Length</td>
+                    <td><input type="number" min="1" max="100" name="length" required /></td>
+                </tr>
+                <tr>
+                    <td>Turn time (sec)</td>
+                    <td><input type="number" min="1" max="15" name="turnTime" required /></td>
+                </tr>
+                </tr>
+                <tr>
+                    <td>Show right answers</td>
+                    <td>
+                        <input type="checkbox" min="1" max="15" id="show-right-answers" name="showRightAnswers" />
+                        <label for="show-right-answers">
+                            Yes
+                        </label> 
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="4">Sequences</td>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="sequence-position" value="position" name="sequences" />
+                        <label for="sequence-position">
+                            Position
+                        </label>
+                    </td>
+                </tr>   
+                <tr>
+                    <td>
+                        <input type="checkbox" id="sequence-color" value="color" name="sequences" />
+                        <label for="sequence-color">
+                            Color
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="radio">
+                        <fieldset>
+                            <legend>Shape</legend>
+
+                            <input type="radio" id="sequence-letters" value="letters" name="sequences" />
+                            <label for="sequence-letters">
+                                Letters
+                            </label>
+                            
+                            <input type="radio" id="sequence-digits" value="digits" name="sequences" />
+                            <label for="sequence-digits">
+                                Digits
+                            </label>
+
+                            <input type="radio" id="sequence-no" value="" name="sequences" />
+                            <label for="sequence-no">
+                                No
+                            </label>
+                        </fieldset>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+

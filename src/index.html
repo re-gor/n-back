@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+    <title>N-Back Game</title>
+    <meta lang="ru" charset="utf-8" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="importmap">
+        {
+            "imports": {
+                "mustache": "../node_modules/mustache/mustache.mjs"
+            }
+        }
+    </script>
+    <script src="./script.js" type="module"></script>
+</head>
+<body>
+    <div class="root initing" id="root">
+        <h2 class="header">N-Back</h2>
+        <!-- <n-screen-switcher /> -->
+        <div is='n-screen-switcher' id="app">
+            <div slot="screen" data-screen-id="welcome" data-show-in-menu="Menu">
+                <div is="n-menu" id="menu">
+                    <div is="n-settings" slot="content" id="settings"></div>
+                </div>
+            </div>
+            <div slot="screen" data-screen-id="stat" data-show-in-menu="Statistics">
+                <div is="n-statistics" id="stat"></div>
+            </div>
+            <div slot="screen" data-screen-id="game">
+                <div is="n-game" id="game"></div>
+            </div>
+        </div>
+    </div>
+</body>

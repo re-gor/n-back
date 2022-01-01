@@ -1,0 +1,19 @@
+#root {
+    width: 100vw;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 10px auto 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#root .header {
+    border: 1px solid grey;
+    background-color: blanchedalmond;
+    padding: 5px 10px 5px;
+}
+
+#root.initing > div {
+    visibility: hidden;
+}
