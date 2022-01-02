@@ -2,7 +2,7 @@ import { importTemplate, importTemplateFromCache } from "../../utils/loadHtml.js
 import { Storage } from "../../utils/storage.js";
 
 const template = await importTemplate(import.meta.url, {props: {}});
-const tableRow = await importTemplate(import.meta.url, {path: './tableRow.html'});
+await importTemplate(import.meta.url, {path: './tableRow.html'});
 
 export class Stat extends HTMLDivElement {
     static #isDefined = false
@@ -24,6 +24,11 @@ export class Stat extends HTMLDivElement {
         const {results} = Storage.getLog();
 
         let prevDate = '';
+
+        if (Object.keys(results).length === 0) {
+            tableBody.insertAdjacentHTML('afterend', "<div class='stat__nothing'>There will be your progress</div>")
+            return;
+        }
 
         Object
             .entries(results)
@@ -53,12 +58,27 @@ export class Stat extends HTMLDivElement {
             })
     }
 
+    #prepareCleanProgressButton() {
+        this.shadowRoot.querySelector('.stat__clean-progress').addEventListener('click', () => {
+            const answer = prompt('Warning! Do you really want to eliminate all your game log? Print "Yes" if it so');
+            
+            if (answer.toLowerCase() === 'yes') {
+                Storage.cleanGameLog();
+            }
+
+            this.#render();
+        })
+    }
+
     connectedCallback() {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(template.cloneNode(true));
+        this.#prepareCleanProgressButton();
 
         this.#render();
     }
+
+
 
     render() {
         this.#render();

@@ -45,6 +45,10 @@ export class Storage {
         localStorage.setItem('gameLog', JSON.stringify(log));
     }
 
+    static cleanGameLog() {
+        localStorage.setItem('gameLog', JSON.stringify({results: {}}));
+    }
+
     static writeSettings(settings) {
         localStorage.setItem('settings', JSON.stringify(settings));
     }
