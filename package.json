@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "python3 -m http.server"
+    "prepare-mustache": "terser --module --compress --mangle -o ./src/utils/mustache.min.mjs -- ./node_modules/mustache/mustache.mjs",
+    "start": "npm run prepare-mustache && python3 -m http.server"
   },
   "keywords": [
     "n-back"
@@ -14,5 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "terser": "^5.10.0"
   }
 }

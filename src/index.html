@@ -6,7 +6,7 @@
     <script type="importmap">
         {
             "imports": {
-                "mustache": "../node_modules/mustache/mustache.mjs"
+                "mustache": "./utils/mustache.min.mjs"
             }
         }
     </script>
@@ -15,7 +15,6 @@
 <body>
     <div class="root initing" id="root">
         <h2 class="header">N-Back</h2>
-        <!-- <n-screen-switcher /> -->
         <div is='n-screen-switcher' id="app">
             <div slot="screen" data-screen-id="welcome" data-show-in-menu="Menu">
                 <div is="n-menu" id="menu">
