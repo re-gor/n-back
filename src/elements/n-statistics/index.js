@@ -16,18 +16,19 @@ export class Stat extends HTMLDivElement {
     }
 
     #render() {
-        const tableBody = this.shadowRoot.querySelector('table');
-        const header = tableBody.querySelector('table thead');
-        tableBody.innerHTML = '';
-        tableBody.appendChild(header);
+        const table = this.shadowRoot.querySelector('table');
+        const nothing = this.shadowRoot.querySelector('.stat__nothing');
+        table.querySelectorAll('tbody').forEach(e => e.remove());
 
         const {results} = Storage.getLog();
 
         let prevDate = '';
 
-        if (Object.keys(results).length === 0) {
-            tableBody.insertAdjacentHTML('afterend', "<div class='stat__nothing'>There will be your progress</div>")
+        if (!nothing && Object.keys(results).length === 0) {
+            table.insertAdjacentHTML('afterend', "<div class='stat__nothing'>There will be your progress</div>")
             return;
+        } else if (nothing && Object.keys(results).length) {
+            nothing.remove();
         }
 
         Object
@@ -54,7 +55,7 @@ export class Stat extends HTMLDivElement {
                     prevDate = date;
                 });
 
-                tableBody.appendChild(docFragment);
+                table.appendChild(docFragment);
             })
     }
 

@@ -71,15 +71,7 @@ export class Game extends HTMLDivElement {
         });
     }
 
-    #clearCells() {
-        const cells = Array.from(this.shadowRoot.querySelectorAll(".game__table td"));
-
-        cells.forEach(c => c.innerHTML = "");
-    }
-
     #makeTurn() {
-        this.#clearCells();
-
         const {
             iteration,
             settings,
@@ -127,10 +119,16 @@ export class Game extends HTMLDivElement {
             }
         }, []);
 
-        const value = `<div class="${classes}">${values}</div>`;
+        const value = this.shadowRoot.getElementById('game__current-value');
+        const targetCell = this.shadowRoot.querySelector(`[data-cell-id="${position}"]`);
 
-        this.shadowRoot.querySelector(`[data-cell-id="${position}"]`).innerHTML = value;
-
+        if (!value) {
+            targetCell.innerHTML = `<div class="${classes}" id="game__current-value">${values}</div>`;
+        } else {
+            value.className = classes;
+            targetCell.appendChild(value);
+        }
+        
         ++this.#state.iteration;
     }
 
@@ -156,7 +154,7 @@ export class Game extends HTMLDivElement {
                         turnTime: `${settings.turnTime} sec`
                     }
                 } 
-            }).cloneNode(true)
+            })
         );
         this.shadowRoot.querySelector('.game__replay').addEventListener('click', () => this.#replay());
 
@@ -189,6 +187,7 @@ export class Game extends HTMLDivElement {
             iteration: 0,
             userScore: 0,
             actualScore: 0,
+            intervalId: null,
         }
 
         this.#setupButtons()
@@ -196,9 +195,9 @@ export class Game extends HTMLDivElement {
         setTimeout(() => {
             this.#makeTurn();
 
-            const intervalId = setInterval(() => {
+            this.#state.intervalId = setInterval(() => {
                 if (this.#state.iteration === this.#state.sequenceLength) {
-                    clearInterval(intervalId);
+                    this.#killInterval();
                 }
                 this.#makeTurn();
 
@@ -218,8 +217,15 @@ export class Game extends HTMLDivElement {
                 userScore: this.#state.userScore,
                 actualScore: this.#state.actualScore,
                 score: this.#getScore(),
-            }, path: './score.html'}).cloneNode(true)
+            }, path: './score.html'})
         );
+    }
+
+    #killInterval() {
+        if (this.#state.intervalId) {
+            clearInterval(this.#state.intervalId);
+            this.#state.intervalId = null;
+        }
     }
 
     endGame() {
@@ -231,6 +237,7 @@ export class Game extends HTMLDivElement {
             this.#setupEndGame();
         }
 
+        this.#killInterval();
         this.dispatchEvent(new Event('gameEnded'));
     }
 
