@@ -3,7 +3,8 @@
     flex-direction: column;
 }
 
-.menu__play, .menu__reload-assets {
-    margin-top: 10px;
-    height: 55px;
+.menu__play {
+    margin-top: var(--gap-medium);
+    height: var(--button-big-size, 55px);
+    font-size: var(--button-font-size);
 }

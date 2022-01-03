@@ -1,11 +1,11 @@
 .screen-switcher__header:not(:empty) {
     border-bottom: 2px solid lightgray;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: var(--gap-medium);
+    margin-bottom: var(--gap-medium);
 }
 
 .screen-switcher__header > button {
-    height: 30px;
+    height: var(--button-medium-size);
     min-width: 80px;
     margin-right: 5px;
 }
