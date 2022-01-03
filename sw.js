@@ -1,41 +1,41 @@
 
 const ASSETS = [
-    '/',
-    '/index.html',
-    '/styles.css',
-    '/script.js',
-    '/manifest.json',
-    '/images/icons/icon-192.png',
-    '/images/icons/favicon.ico',
+    './',
+    './index.html',
+    './styles.css',
+    './script.js',
+    './manifest.json',
+    './images/icons/icon-192.png',
+    './images/icons/favicon.ico',
 
-    '/utils/constants.js',
-    '/utils/loadHtml.js',
-    '/utils/serviceWorker.js',
-    '/utils/mustache.min.mjs',
-    '/utils/storage.js',
+    './utils/constants.js',
+    './utils/loadHtml.js',
+    './utils/serviceWorker.js',
+    './utils/mustache.min.mjs',
+    './utils/storage.js',
     
-    '/elements/n-game/styles.css',
-    '/elements/n-game/index.js',
-    '/elements/n-game/score.html',
-    '/elements/n-game/template.html',
-    '/elements/n-statistics/styles.css',
-    '/elements/n-statistics/index.js',
-    '/elements/n-statistics/template.html',
-    '/elements/n-statistics/tableRow.html',
-    '/elements/n-screen-switcher/styles.css',
-    '/elements/n-screen-switcher/button.html',
-    '/elements/n-screen-switcher/index.js',
-    '/elements/n-screen-switcher/template.html',
-    '/elements/n-settings/styles.css',
-    '/elements/n-settings/index.js',
-    '/elements/n-settings/template.html',
-    '/elements/n-menu',
-    '/elements/n-menu/styles.css',
-    '/elements/n-menu/index.js',
-    '/elements/n-menu/template.html',
-    '/elements/n-game-settings/index.js',
-    '/elements/n-game-settings/template.html',
-    '/elements/n-game-settings/styles.css',
+    './elements/n-game/styles.css',
+    './elements/n-game/index.js',
+    './elements/n-game/score.html',
+    './elements/n-game/template.html',
+    './elements/n-statistics/styles.css',
+    './elements/n-statistics/index.js',
+    './elements/n-statistics/template.html',
+    './elements/n-statistics/tableRow.html',
+    './elements/n-screen-switcher/styles.css',
+    './elements/n-screen-switcher/button.html',
+    './elements/n-screen-switcher/index.js',
+    './elements/n-screen-switcher/template.html',
+    './elements/n-settings/styles.css',
+    './elements/n-settings/index.js',
+    './elements/n-settings/template.html',
+    './elements/n-menu',
+    './elements/n-menu/styles.css',
+    './elements/n-menu/index.js',
+    './elements/n-menu/template.html',
+    './elements/n-game-settings/index.js',
+    './elements/n-game-settings/template.html',
+    './elements/n-game-settings/styles.css',
 ];
 
 const IGNORE_ASSETS = [
@@ -74,9 +74,8 @@ self.addEventListener('fetch', (event) => {
                 return response;
             } 
 
-            if (IGNORE_ASSETS.includes(
-                new URL(event.request.url).pathname
-            )) {
+            const path = new URL(event.request.url).pathname;
+            if (IGNORE_ASSETS.find(a => path.includes(a))) {
                 return fetch(event.request);
             }
 
