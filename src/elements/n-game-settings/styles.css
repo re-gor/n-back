@@ -1,0 +1,8 @@
+form table td {
+    vertical-align: top;
+}
+
+form table td input[type="number"] {
+    margin-left: 3px;
+    width: 40px; 
+}
