@@ -1,0 +1,19 @@
+.screen-switcher__header:not(:empty) {
+    border-bottom: 2px solid lightgray;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.screen-switcher__header > button {
+    height: 30px;
+    min-width: 80px;
+    margin-right: 5px;
+}
+
+::slotted([data-screen-id]) {
+    display: none;
+}
+
+::slotted([data-screen-id].active) {
+    display: block;
+}
