@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare:cert": "bash ./make_cert.sh",
     "prepare:mustache": "terser --module --compress --mangle -o ./src/utils/mustache.min.mjs -- ./node_modules/mustache/mustache.mjs",
-    "prepare": "npm run prepare:cert && prepare:mustache",
+    "prepare": "npm run prepare:cert && npm run prepare:mustache",
     "start": "http-server ./src --ssl -C cert.pem -p 443 -b -g"
   },
   "keywords": [
