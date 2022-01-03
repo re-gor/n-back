@@ -38,7 +38,7 @@
         "sizes": "512x512"
       }
     ],
-    "start_url": "./n-back/?source=pwa",
+    "start_url": "./?source=pwa",
     "background_color": "#ffebcd",
     "display": "minimal-ui",
     "scope": "./n-back",
