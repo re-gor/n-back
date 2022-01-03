@@ -45,20 +45,7 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches
             .open('v1')
-            .then(async (cache) => {
-                // GitHub tends to randomly cancel massive loadings
-                // Will load assets by chunks
-                let acc = [];
-
-                for (let idx = 0; idx < ASSETS.length; ++idx) {
-                    acc.push(ASSETS[idx]);
-
-                    if (acc.length === 5 || idx === ASSETS.length - 1) {
-                        await cache.addAll(acc);
-                        acc = [];
-                    }
-                }
-            })
+            .then(addAssetsInChunks)
     );
 });
 
@@ -73,7 +60,7 @@ self.addEventListener("message", async (event) => {
         console.log({keys});
 
         await Promise.all(keys.map(k => cache.delete(k)));
-        await cache.addAll(ASSETS);
+        await addAssetsInChunks(cache);
     }
 });
 
@@ -103,4 +90,19 @@ const fetchWithCache = async (request) => {
     cache.put(request, response.clone());
 
     return response;
+}
+
+const addAssetsInChunks = async (cache) => {
+    // GitHub tends to randomly cancel massive loadings
+    // Will load assets by chunks
+    let acc = [];
+
+    for (let idx = 0; idx < ASSETS.length; ++idx) {
+        acc.push(ASSETS[idx]);
+
+        if (acc.length === 5 || idx === ASSETS.length - 1) {
+            await cache.addAll(acc);
+            acc = [];
+        }
+    }
 }
