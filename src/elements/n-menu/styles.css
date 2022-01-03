@@ -1,9 +1,0 @@
-.menu {
-    display: flex;
-    flex-direction: column;
-}
-
-.menu__play, .menu__reload-assets {
-    margin-top: 10px;
-    height: 55px;
-}
