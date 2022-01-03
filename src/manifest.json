@@ -3,55 +3,55 @@
     "name": "Dual N-Back - brain scratching game",
     "icons": [
       {
-        "src": "/images/icons/icon-16.png",
+        "src": "./images/icons/icon-16.png",
         "type": "image/png",
         "sizes": "16x16"
       },
       {
-        "src": "/images/icons/icon-32.png",
+        "src": "./images/icons/icon-32.png",
         "type": "image/png",
         "sizes": "32x32"
       },
       {
-        "src": "/images/icons/icon-64.png",
+        "src": "./images/icons/icon-64.png",
         "type": "image/png",
         "sizes": "64x64"
       },
       {
-        "src": "/images/icons/icon-128.png",
+        "src": "./images/icons/icon-128.png",
         "type": "image/png",
         "sizes": "128x128"
       },
       {
-        "src": "/images/icons/icon-192.png",
+        "src": "./images/icons/icon-192.png",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "/images/icons/icon-256.png",
+        "src": "./images/icons/icon-256.png",
         "type": "image/png",
         "sizes": "256x256"
       },
       {
-        "src": "/images/icons/icon-512.png",
+        "src": "./images/icons/icon-512.png",
         "type": "image/png",
         "sizes": "512x512"
       }
     ],
-    "start_url": "/?source=pwa",
+    "start_url": "./?source=pwa",
     "background_color": "#ffebcd",
     "display": "standalone",
-    "scope": "/",
+    "scope": ".",
     "theme_color": "#ffebcd",
     "description": "Dual N-back is a game which can improve your mental skills. Read more on https://en.wikipedia.org/wiki/N-back",
     "screenshots": [
       {
-        "src": "/images/screenshot__menu.png",
+        "src": "./images/screenshot__menu.png",
         "type": "image/png",
         "sizes": "540x790"
       },
       {
-        "src": "/images/screenshot__in-game.png",
+        "src": "./images/screenshot__in-game.png",
         "type": "image/png",
         "sizes": "540x790"
       }

@@ -8,6 +8,7 @@
     "prepare:cert": "bash ./make_cert.sh",
     "prepare:mustache": "terser --module --compress --mangle -o ./src/utils/mustache.min.mjs -- ./node_modules/mustache/mustache.mjs",
     "prepare": "npm run prepare:cert && npm run prepare:mustache",
+    "gh-pages": "bash ./make_gh_pages.sh",
     "start": "http-server ./src --ssl -C cert.pem -p 443 -b -g"
   },
   "keywords": [
