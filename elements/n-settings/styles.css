@@ -4,8 +4,9 @@
 }
 
 .settings__button {
-    margin-top: 10px;
-    height: 55px;
+    margin-top: var(--gap-medium);
+    height: var(--button-big-size, 55px);
+    font-size: var(--button-font-size);
 }
 
 .settings__clean-stat {

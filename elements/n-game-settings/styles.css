@@ -1,8 +1,10 @@
 form table td {
     vertical-align: top;
+    padding: var(--gap-little) var(--gap-little) 0;
 }
 
 form table td input[type="number"] {
-    margin-left: 3px;
-    width: 40px; 
+    margin-left: 4px;
+    width: 50px; 
+    font-size: var(--input-font-size);
 }
