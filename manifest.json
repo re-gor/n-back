@@ -40,8 +40,8 @@
     ],
     "start_url": "./?source=pwa",
     "background_color": "#ffebcd",
-    "display": "minimal-ui",
-    "scope": "./n-back",
+    "display": "standalone",
+    "scope": ".",
     "theme_color": "#ffebcd",
     "description": "Dual N-back is a game which can improve your mental skills. Read more on https://en.wikipedia.org/wiki/N-back",
     "screenshots": [
