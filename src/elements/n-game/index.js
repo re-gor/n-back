@@ -1,4 +1,4 @@
-import { importTemplate, importTemplateFromCache} from "../../utils/loadHtml.js";
+import { importTemplate, importTemplateFromCache } from "../../utils/loadHtml.js";
 import { Storage } from '../../utils/storage.js';
 
 await importTemplate(import.meta.url, {props: {}});
@@ -30,12 +30,12 @@ export class Game extends HTMLDivElement {
             return;
         }
 
-        customElements.define('n-game', Game, {extends: 'div'});
+        customElements.define('n-game', Game, { extends: 'div' });
         Game.#isDefined = true;
     }
 
     connectedCallback() {
-        this.attachShadow({mode: 'open'});
+        this.attachShadow({ mode: 'open' });
     }
 
     #makeGuess(sequenceName) {
@@ -58,17 +58,33 @@ export class Game extends HTMLDivElement {
         buttons.innerHTML = '';
         buttons.insertAdjacentHTML(
             'afterbegin',
-            this.#state.settings.sequences.map(seq => 
-                `<button type="button" data-sequence-name="${seq}" disabled>${seq.toLowerCase()}</button>`
+            this.#state.settings.sequences.map((seq, idx) =>
+                `<button type="button" data-sequence-name="${seq}" data-sequence-idx="${idx + 1}" disabled>${seq.toLowerCase()}</button>`
             ).join('')
         );
-        buttons.addEventListener('click', event => {
-            if (event.target.nodeName === 'BUTTON' && event.target.dataset.sequenceName) {
-                this.#makeGuess(event.target.dataset.sequenceName);
+        buttons.addEventListener('click', this.#onButtonClick);
+    }
 
-                event.target.disabled = true;
-            }
-        });
+    #onButtonClick = event => {
+        if (event.target.nodeName === 'BUTTON' && event.target.dataset.sequenceName) {
+            this.#makeGuess(event.target.dataset.sequenceName);
+
+            event.target.disabled = true;
+        }
+    }
+
+    #setupShortcuts() {
+        window.addEventListener('keypress', this.#onShortcut);
+    }
+
+    #onShortcut = event => {
+        if ('1' <= event.key && event.key <= '9') {
+            const btn = this.#getButtonsRow().querySelector(`button[data-sequence-idx="${event.key}"]`);
+            
+            this.#makeGuess(btn.dataset.sequenceName);
+
+            btn.disabled = true;
+        }
     }
 
     #makeTurn() {
@@ -82,9 +98,9 @@ export class Game extends HTMLDivElement {
         if (iteration >= settings.n) {
             this.#getButtonsRow().querySelectorAll('button').forEach(b => {
                 b.disabled = false;
-                
+
                 if (settings.showRightAnswers) {
-                    const seq = b.dataset.sequenceName; 
+                    const seq = b.dataset.sequenceName;
                     if (sequences[seq][iteration - 1 - settings.n] === sequences[seq][iteration - 1]) {
                         b.classList.add('was-right');
                     }
@@ -101,7 +117,7 @@ export class Game extends HTMLDivElement {
 
         const position = Array.isArray(sequences[SEQUENCE.POSITION]) ? sequences[SEQUENCE.POSITION][iteration] : 4;
         let classes = this.#state.commonClasses;
-        let values = '';  
+        let values = '';
 
         Object.entries(this.#state.sequences).forEach(([name, seq]) => {
             const isRight = iteration >= settings.n && seq[iteration - settings.n] === seq[iteration];
@@ -126,9 +142,10 @@ export class Game extends HTMLDivElement {
             targetCell.innerHTML = `<div class="${classes}" id="game__current-value">${values}</div>`;
         } else {
             value.className = classes;
+            value.innerText = values;
             targetCell.appendChild(value);
         }
-        
+
         ++this.#state.iteration;
     }
 
@@ -142,19 +159,20 @@ export class Game extends HTMLDivElement {
             ..._settings,
         };
         const sequenceLength = settings.length + settings.n;
-        
+
         this.shadowRoot.innerHTML = '';
         this.shadowRoot.appendChild(
-            importTemplateFromCache(import.meta.url, { 
-                props: {
-                    settings: {
-                        n: settings.n, 
-                        sequences: settings.sequences.map(s => s.toLowerCase()).join(', '),
-                        length: sequenceLength, 
-                        turnTime: `${settings.turnTime} sec`
+            importTemplateFromCache(
+                import.meta.url, {
+                    props: {
+                        settings: {
+                            n: settings.n,
+                            sequences: settings.sequences.map(s => s.toLowerCase()).join(', '),
+                            length: sequenceLength,
+                            turnTime: `${settings.turnTime} sec`
+                        }
                     }
-                } 
-            })
+                })
         );
         this.shadowRoot.querySelector('.game__replay').addEventListener('click', () => this.#replay());
 
@@ -174,7 +192,7 @@ export class Game extends HTMLDivElement {
 
             return acc;
         }, 'item');
-        
+
         this.#state = {
             isProperlyFinished: false,
             settings,
@@ -190,7 +208,8 @@ export class Game extends HTMLDivElement {
             intervalId: null,
         }
 
-        this.#setupButtons()
+        this.#setupButtons();
+        this.#setupShortcuts();
 
         setTimeout(() => {
             this.#makeTurn();
@@ -213,11 +232,15 @@ export class Game extends HTMLDivElement {
         scoreContainer.innerHTML = '';
 
         scoreContainer.appendChild(
-            importTemplateFromCache(import.meta.url, {props: {
-                userScore: this.#state.userScore,
-                actualScore: this.#state.actualScore,
-                score: this.#getScore(),
-            }, path: './score.html'})
+            importTemplateFromCache(
+                import.meta.url, {
+                    props: {
+                        userScore: this.#state.userScore,
+                        actualScore: this.#state.actualScore,
+                        score: this.#getScore(),
+                    },
+                    path: './score.html'
+                })
         );
     }
 
@@ -233,7 +256,7 @@ export class Game extends HTMLDivElement {
             this.#state.isProperlyFinished = true;
             this.#logGame();
             this.dispatchEvent(new Event('gameEndedProperly'));
-            
+
             this.#setupEndGame();
         }
 
@@ -242,7 +265,10 @@ export class Game extends HTMLDivElement {
     }
 
     #getScore() {
-        const {userScore, actualScore} = this.#state;
+        const {
+            userScore,
+            actualScore
+        } = this.#state;
 
         if (userScore < 0) {
             return 0;
@@ -262,7 +288,7 @@ export class Game extends HTMLDivElement {
 }
 
 function generateSequence(sec, len) {
-    switch(sec) {
+    switch (sec) {
         case SEQUENCE.POSITION:
             return generateSequenceFromItems('012345678'.split('').map(Number), len);
         case SEQUENCE.LETTERS:
@@ -282,7 +308,7 @@ function generateSequence(sec, len) {
                 'brown',
                 'grey',
             ], len);
-        default: 
+        default:
             throw new Error(`A sequence ${sec} is not supported`);
     }
 }
@@ -290,15 +316,15 @@ function generateSequence(sec, len) {
 function generateSequenceFromItems(items, len) {
     return (
         (new Array(len))
-            .fill(null)
-            .map(() => items[randomInt(items.length)])
+        .fill(null)
+        .map(() => items[randomInt(items.length)])
     )
 }
 
 function randomInt(...args) {
     let start = 0;
     let end;
-    
+
     if (!args.length) {
         throw new Error('There should be at least one argument in randomInt')
     } else if (args.length === 1) {

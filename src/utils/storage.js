@@ -2,7 +2,7 @@ import { SEQUENCE } from "../elements/n-game/index.js";
 
 export class Storage {
     static #getItem(key, defaults) {
-        let item = defaults
+        let item = defaults;
 
         try {
             const raw = localStorage.getItem(key);
@@ -21,14 +21,32 @@ export class Storage {
         return Storage.#getItem('gameLog', {results: {}});
     }
 
-    static getSettings() {
-        return Storage.#getItem('settings', {
+    static getGameSettings() {
+        return Storage.#getItem('gameSettings', {
             n: 1,
             turnTime: 5,
             length: 15,
             sequences: [SEQUENCE.POSITION, SEQUENCE.COLOR],
             showRightAnswers: false,
         });
+    }
+
+    static getServiceWorkerSettings() {
+        return Storage.#getItem('swSettings', {
+            isEnabled: true,
+        });
+    }
+
+    static disableServiceWorker() {
+        localStorage.setItem('swSettings', JSON.stringify({
+            isEnabled: false,
+        }));
+    }
+
+    static enableServiceWorker() {
+        localStorage.setItem('swSettings', JSON.stringify({
+            isEnabled: true,
+        }));
     }
 
     static writeGame(game) {
@@ -49,8 +67,12 @@ export class Storage {
         localStorage.setItem('gameLog', JSON.stringify({results: {}}));
     }
 
-    static writeSettings(settings) {
-        localStorage.setItem('settings', JSON.stringify(settings));
+    static writeGameSettings(settings) {
+        localStorage.setItem('gameSettings', JSON.stringify(settings));
+    }
+
+    static cleanGameSettings() {
+        localStorage.removeItem('gameSettings');
     }
 }
 

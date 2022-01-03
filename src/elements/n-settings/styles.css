@@ -1,8 +1,13 @@
-form table td {
-    vertical-align: top;
+.settings {
+    display: flex;
+    flex-direction: column;
 }
 
-form table td input[type="number"] {
-    margin-left: 3px;
-    width: 40px; 
+.settings__button {
+    margin-top: 10px;
+    height: 55px;
+}
+
+.settings__clean-stat {
+    border: 1px solid red;
 }

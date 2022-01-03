@@ -1,11 +1,14 @@
-import { importTemplate, importTemplateFromCache } from "../../utils/loadHtml.js";
+import { importTemplate } from "../../utils/loadHtml.js";
+import { ServiceWorkerUtility } from "../../utils/serviceWorker.js";
 import { Storage } from "../../utils/storage.js";
 
-const template = await importTemplate(import.meta.url, {props: {}});
+const {isEnabled: isSwEnabled} = Storage.getServiceWorkerSettings();
+const template = await importTemplate(import.meta.url, {props: {
+    swAction: isSwEnabled ? 'Disable' : 'Enable'
+}});
 
 export class Settings extends HTMLDivElement {
     static #isDefined = false
-    #settings = {}
     static register() {
         if (Settings.#isDefined) {
             return;
@@ -15,49 +18,48 @@ export class Settings extends HTMLDivElement {
         Settings.#isDefined = true;
     }
 
-    connectedCallback() {
-        this.attachShadow({mode: 'open'});
-        this.shadowRoot.appendChild(template.cloneNode(true));  
+    #prepareCleanProgressButton() {
+        this.shadowRoot.querySelector('.settings__clean-stat').addEventListener('click', () => {
+            const answer = prompt('Warning! Do you really want to eliminate all your game log? Print "Yes" if it so');
+            
+            if (answer.toLowerCase() === 'yes') {
+                Storage.cleanGameLog();
 
-        this.#settings = Storage.getSettings();
-
-        Object.entries(this.#settings).forEach(([key, value]) => {
-            const inputs = this.shadowRoot.querySelectorAll(`input[name=${key}`);
-
-            if (inputs.length === 1) {
-                const input = inputs[0];
-
-                if (typeof value === 'boolean') {
-                    input.checked = value;
-                } else if (typeof value === 'number') {
-                    input.value = value;
-                }
-            } else {
-                inputs.forEach(input => {
-                    const id = input.id.split('-')[1] || '';
-
-                    if (value.includes(id.toUpperCase())) {
-                        input.checked = true;
-                    }
-                })
+                this.dispatchEvent(new Event('statCleaned'));
             }
         });
     }
 
-    getSettings() {
-        const form = this.shadowRoot.querySelector('form');
-        const formData = new FormData(form);
+    #prepareOfflineToggler() {
+        this.shadowRoot.querySelector('.settings__offline-toggler').addEventListener('click', event => {
+            const {isEnabled: isSwEnabled} = Storage.getServiceWorkerSettings();
 
-        return {
-            n: Number(formData.get('n')),
-            length: Number(formData.get('length')),
-            turnTime: Number(formData.get('turnTime')),
-            showRightAnswers: formData.get('showRightAnswers') === 'on',
-            sequences: formData.getAll('sequences').filter(Boolean).map(s => s.toUpperCase()),
-        }
+            if (isSwEnabled) {
+                Storage.disableServiceWorker();
+                ServiceWorkerUtility.uninstall();
+                event.target.innerText = 'Enable offline mode';
+            } else {
+                Storage.enableServiceWorker();
+                ServiceWorkerUtility.register();
+                event.target.innerText = 'Disable offline mode';
+            }
+        })
     }
 
-    saveSettings() {
-        Storage.writeSettings(this.getSettings());
+    connectedCallback() {
+        this.attachShadow({mode: 'open'});
+        this.shadowRoot.appendChild(template.cloneNode(true));
+
+        this.#prepareCleanProgressButton();
+        this.#prepareOfflineToggler();
+        this.shadowRoot
+            .querySelector('.settings__reload-assets')
+            .addEventListener('click', () => this.dispatchEvent(new Event('reloadAssets')));
+        this.shadowRoot
+            .querySelector('.settings__drop-game-settings')
+            .addEventListener('click', () => {
+                Storage.cleanGameSettings();
+                this.dispatchEvent(new Event('gameSettingsCleaned'));
+            });
     }
 }

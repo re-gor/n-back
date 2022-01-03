@@ -59,27 +59,12 @@ export class Stat extends HTMLDivElement {
             })
     }
 
-    #prepareCleanProgressButton() {
-        this.shadowRoot.querySelector('.stat__clean-progress').addEventListener('click', () => {
-            const answer = prompt('Warning! Do you really want to eliminate all your game log? Print "Yes" if it so');
-            
-            if (answer.toLowerCase() === 'yes') {
-                Storage.cleanGameLog();
-            }
-
-            this.#render();
-        })
-    }
-
     connectedCallback() {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(template.cloneNode(true));
-        this.#prepareCleanProgressButton();
 
         this.#render();
     }
-
-
 
     render() {
         this.#render();

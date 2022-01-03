@@ -1,4 +1,4 @@
-import mustache from "mustache";
+import mustache from "./mustache.min.mjs";
 const loadCache = {};
 
 export const loadStatic = (base, {

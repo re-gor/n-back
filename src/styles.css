@@ -17,3 +17,13 @@
 #root.initing > div {
     visibility: hidden;
 }
+
+@media all and (display-mode: standalone) {
+    #root .header {
+        display: none;
+    }
+
+    #root {
+        padding-top: 20px;
+    }
+}

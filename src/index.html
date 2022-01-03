@@ -3,6 +3,8 @@
     <title>N-Back Game</title>
     <meta lang="ru" charset="utf-8" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="shortcut icon" href="/images/icons/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
     <script type="importmap">
         {
             "imports": {
@@ -18,11 +20,14 @@
         <div is='n-screen-switcher' id="app">
             <div slot="screen" data-screen-id="welcome" data-show-in-menu="Menu">
                 <div is="n-menu" id="menu">
-                    <div is="n-settings" slot="content" id="settings"></div>
+                    <div is="n-game-settings" slot="content" id="game-settings"></div>
                 </div>
             </div>
             <div slot="screen" data-screen-id="stat" data-show-in-menu="Statistics">
                 <div is="n-statistics" id="stat"></div>
+            </div>
+            <div slot="screen" data-screen-id="settings" data-show-in-menu="Settings">
+                <div is="n-settings" slot="content" id="settings"></div>
             </div>
             <div slot="screen" data-screen-id="game">
                 <div is="n-game" id="game"></div>

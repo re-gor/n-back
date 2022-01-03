@@ -55,11 +55,6 @@
     border-bottom: none;
 }
 
-.stat__clean-progress {
-    margin-top: 15px;
-    border: 1px solid red;
-}
-
 .stat__nothing {
     font-style: italic;
     margin-top: 15px;
