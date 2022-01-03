@@ -8,3 +8,11 @@ form table td input[type="number"] {
     width: 50px; 
     font-size: var(--input-font-size);
 }
+
+.game-settings__sequence-char {
+    white-space: nowrap;
+}
+
+.game-settings__sequence-char label {
+    white-space: nowrap;
+}
