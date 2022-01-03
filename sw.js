@@ -29,7 +29,6 @@ const ASSETS = [
     './elements/n-settings/styles.css',
     './elements/n-settings/index.js',
     './elements/n-settings/template.html',
-    './elements/n-menu',
     './elements/n-menu/styles.css',
     './elements/n-menu/index.js',
     './elements/n-menu/template.html',
@@ -46,7 +45,20 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches
             .open('v1')
-            .then(cache => cache.addAll(ASSETS))
+            .then(async (cache) => {
+                // GitHub tends to randomly cancel massive loadings
+                // Will load assets by chunks
+                let acc = [];
+
+                for (let idx = 0; idx < ASSETS.length; ++idx) {
+                    acc.push(ASSETS[idx]);
+
+                    if (acc.length === 5 || idx === ASSETS.length - 1) {
+                        await cache.addAll(acc);
+                        acc = [];
+                    }
+                }
+            })
     );
 });
 
