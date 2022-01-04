@@ -20,6 +20,7 @@ export class Game extends HTMLDivElement {
     static #defaultSettings = {
         turnTime: 5, // sec
         length: 4, // actual length is length + N - 1;
+        probMulti: 0, // how more frequently match will be triggered
         n: 1,
         showRightAnswers: false,
         sequences: [SEQUENCE.POSITION, SEQUENCE.COLOR, SEQUENCE.DIGITS]
@@ -78,9 +79,9 @@ export class Game extends HTMLDivElement {
     }
 
     #onShortcut = event => {
-        if ('1' <= event.key && event.key <= '9') {
+        if (this.#state && this.#state.iteration && '1' <= event.key && event.key <= '9') {
             const btn = this.#getButtonsRow().querySelector(`button[data-sequence-idx="${event.key}"]`);
-            
+
             this.#makeGuess(btn.dataset.sequenceName);
 
             btn.disabled = true;
@@ -143,6 +144,11 @@ export class Game extends HTMLDivElement {
         } else {
             value.className = classes;
             value.innerText = values;
+
+            // make blink
+            value.classList.add('item_hidden');
+            setTimeout(() => value.classList.remove('item_hidden'), 70);
+
             targetCell.appendChild(value);
         }
 
@@ -167,9 +173,10 @@ export class Game extends HTMLDivElement {
                     props: {
                         settings: {
                             n: settings.n,
+                            pm: settings.probMulti,
                             sequences: settings.sequences.map(s => s.toLowerCase()).join(', '),
                             length: sequenceLength,
-                            turnTime: `${settings.turnTime} sec`
+                            turnTime: `${settings.turnTime} sec`,
                         }
                     }
                 })
@@ -199,7 +206,10 @@ export class Game extends HTMLDivElement {
             sequenceLength,
             commonClasses,
             sequences: settings.sequences.reduce((acc, sec) => {
-                acc[sec] = generateSequence(sec, sequenceLength);
+                acc[sec] = generateSequence(sec, sequenceLength, {
+                    pm: settings.probMulti,
+                    n: settings.n,
+                });
                 return acc;
             }, {}),
             iteration: 0,
@@ -287,15 +297,15 @@ export class Game extends HTMLDivElement {
     }
 }
 
-function generateSequence(sec, len) {
+function generateSequence(sec, len, {pm = 1, n = 1} = {}) {
     switch (sec) {
         case SEQUENCE.POSITION:
-            return generateSequenceFromItems('012345678'.split('').map(Number), len);
+            return generateSequenceFromItems('012345678'.split('').map(Number), len, n, pm);
         case SEQUENCE.LETTERS:
             // JKLMNOPQRSTUVWXYZ
-            return generateSequenceFromItems('ABCDEFGHI'.split(''), len);
+            return generateSequenceFromItems('ABCDEFGHI'.split(''), len, n, pm);
         case SEQUENCE.DIGITS:
-            return generateSequenceFromItems('123456789'.split(''), len);
+            return generateSequenceFromItems('123456789'.split(''), len, n, pm);
         case SEQUENCE.COLOR:
             return generateSequenceFromItems([
                 'red',
@@ -307,18 +317,22 @@ function generateSequence(sec, len) {
                 'purple',
                 'brown',
                 'grey',
-            ], len);
+            ], len, n, pm);
         default:
             throw new Error(`A sequence ${sec} is not supported`);
     }
 }
 
-function generateSequenceFromItems(items, len) {
-    return (
-        (new Array(len))
-        .fill(null)
-        .map(() => items[randomInt(items.length)])
-    )
+function generateSequenceFromItems(items, len, n, pm) {
+    const result = new Array(len);
+
+    for (let i = 0; i < len; ++i) {
+        const elementPreIdx = randomInt(items.length + (i >= n ? pm : 0));
+
+        result[i] =  elementPreIdx >= items.length ? result[i - n] : items[elementPreIdx];
+    }
+
+    return result;
 }
 
 function randomInt(...args) {

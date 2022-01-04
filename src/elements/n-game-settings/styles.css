@@ -9,6 +9,10 @@ form table td input[type="number"] {
     font-size: var(--input-font-size);
 }
 
+form table td input:invalid {
+    border: 1px solid red;
+}
+
 .game-settings__sequence-char {
     white-space: nowrap;
 }

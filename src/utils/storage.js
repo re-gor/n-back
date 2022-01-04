@@ -24,6 +24,7 @@ export class Storage {
     static getGameSettings() {
         return Storage.#getItem('gameSettings', {
             n: 1,
+            probMulti: 0,
             turnTime: 5,
             length: 15,
             sequences: [SEQUENCE.POSITION, SEQUENCE.COLOR],

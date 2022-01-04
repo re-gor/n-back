@@ -33,9 +33,15 @@ screenSwitcher.addEventListener('activeScreenSet', event => {
 });
 
 menuScreen.addEventListener('play', () => {
+    const settings = gameSettings.getSettings();
+
+    if (settings.invalid) {
+        return;
+    }
+
     screenSwitcher.setActiveScreen('game');
 
-    game.startGame(gameSettings.getSettings());
+    game.startGame(settings);
 });
 
 settings.addEventListener('reloadAssets', () => {
