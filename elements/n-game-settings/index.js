@@ -54,10 +54,10 @@ export class GameSettings extends HTMLDivElement {
 
         return {
             invalid: !form.reportValidity(),
-            n: Number(formData.get('n')),
-            length: Number(formData.get('length')),
+            n: Math.ceil(Number(formData.get('n'))),
+            length: Math.ceil(Number(formData.get('length'))),
             turnTime: Number(formData.get('turnTime')),
-            probMulti: Number(formData.get('probMulti')),
+            probMulti: Math.floor(Number(formData.get('probMulti'))),
             showRightAnswers: formData.get('showRightAnswers') === 'on',
             sequences: formData.getAll('sequences').filter(Boolean).map(s => s.toUpperCase()),
         }
