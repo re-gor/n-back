@@ -57,10 +57,9 @@ self.addEventListener("message", async (event) => {
     if (action === 'reloadAssets') {
         const cache = await caches.open('v1');
         const keys = await cache.keys();
-        console.log({keys});
 
         await Promise.all(keys.map(k => cache.delete(k)));
-        await addAssetsInChunks(cache);
+        await addAssetsInChunks(cache, true);
     }
 });
 
@@ -92,13 +91,25 @@ const fetchWithCache = async (request) => {
     return response;
 }
 
-const addAssetsInChunks = async (cache) => {
+const addAssetsInChunks = async (cache, force = false) => {
     // GitHub tends to randomly cancel massive loadings
     // Will load assets by chunks
     let acc = [];
 
     for (let idx = 0; idx < ASSETS.length; ++idx) {
-        acc.push(ASSETS[idx]);
+        if (force) {
+            const dissalowCacheHeaders = new Headers();
+            dissalowCacheHeaders.append('pragma', 'no-cache');
+            dissalowCacheHeaders.append('cache-control', 'no-cache');
+
+            const req = new Request(ASSETS[idx], {
+                headers: dissalowCacheHeaders,
+            });
+            
+            acc.push(req)
+        } else {
+            acc.push(ASSETS[idx]);
+        }
 
         if (acc.length === 5 || idx === ASSETS.length - 1) {
             await cache.addAll(acc);
