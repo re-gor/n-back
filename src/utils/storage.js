@@ -38,15 +38,25 @@ export class Storage {
         });
     }
 
-    static disableServiceWorker() {
+    static setServiceWorkerIsEnabled(isEnabled) {
+        const settings = Storage.getServiceWorkerSettings();
         localStorage.setItem('swSettings', JSON.stringify({
-            isEnabled: false,
+            ...settings,
+            isEnabled,
         }));
     }
 
-    static enableServiceWorker() {
-        localStorage.setItem('swSettings', JSON.stringify({
-            isEnabled: true,
+    static getAppSettings() {
+        return Storage.#getItem('settings', {
+            isVibrationEnabled: true,
+        });
+    }
+
+    static setVibration(isVibrationEnabled) {
+        const settings = Storage.getAppSettings();
+        localStorage.setItem('settings', JSON.stringify({
+            ...settings,
+            isVibrationEnabled,
         }));
     }
 

@@ -3,8 +3,10 @@ import { ServiceWorkerUtility } from "../../utils/serviceWorker.js";
 import { Storage } from "../../utils/storage.js";
 
 const {isEnabled: isSwEnabled} = Storage.getServiceWorkerSettings();
+const {isVibrationEnabled} = Storage.getAppSettings();
 const template = await importTemplate(import.meta.url, {props: {
-    swAction: isSwEnabled ? 'Disable' : 'Enable'
+    swAction: isSwEnabled ? 'Disable' : 'Enable',
+    vibAction: isVibrationEnabled ? 'Disable' : 'Enable',
 }});
 
 export class Settings extends HTMLDivElement {
@@ -35,13 +37,27 @@ export class Settings extends HTMLDivElement {
             const {isEnabled: isSwEnabled} = Storage.getServiceWorkerSettings();
 
             if (isSwEnabled) {
-                Storage.disableServiceWorker();
+                Storage.setServiceWorkerIsEnabled(false);
                 ServiceWorkerUtility.uninstall();
                 event.target.innerText = 'Enable offline mode';
             } else {
-                Storage.enableServiceWorker();
+                Storage.setServiceWorkerIsEnabled(true);
                 ServiceWorkerUtility.register();
                 event.target.innerText = 'Disable offline mode';
+            }
+        })
+    }
+
+    #prepareVibrationToggler() {
+        this.shadowRoot.querySelector('.settings__vibration-toggler').addEventListener('click', event => {
+            const {isVibrationEnabled} = Storage.getAppSettings();
+
+            if (isVibrationEnabled) {
+                Storage.setVibration(false);
+                event.target.innerText = 'Enable vibration (will be applied after reload)';
+            } else {
+                Storage.setVibration(true);
+                event.target.innerText = 'Disable vibration (will be applied after reload)';
             }
         })
     }
@@ -52,6 +68,7 @@ export class Settings extends HTMLDivElement {
 
         this.#prepareCleanProgressButton();
         this.#prepareOfflineToggler();
+        this.#prepareVibrationToggler();
         this.shadowRoot
             .querySelector('.settings__reload-assets')
             .addEventListener('click', () => this.dispatchEvent(new Event('reloadAssets')));

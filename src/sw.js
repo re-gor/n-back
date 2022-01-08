@@ -35,6 +35,8 @@ const ASSETS = [
     './elements/n-game-settings/index.js',
     './elements/n-game-settings/template.html',
     './elements/n-game-settings/styles.css',
+    './elements/n-button/index.js',
+    './elements/n-button/styles.css',
 ];
 
 const IGNORE_ASSETS = [

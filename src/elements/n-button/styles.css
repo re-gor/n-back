@@ -1,0 +1,16 @@
+[is="n-button"] {
+    position: relative;
+}
+
+[is="n-button"] .disable-overlay {
+    position: absolute;
+    display: none;
+}
+
+[is="n-button"]:disabled .disable-overlay {
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

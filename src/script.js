@@ -5,6 +5,7 @@ import {Game} from './elements/n-game/index.js';
 import {Stat} from './elements/n-statistics/index.js';
 import {GameSettings} from './elements/n-game-settings/index.js';
 import {Settings} from './elements/n-settings/index.js';
+import {Button} from './elements/n-button/index.js';
 import {Storage} from './utils/storage.js';
 
 const {isEnabled: isSwEnabled} = Storage.getServiceWorkerSettings();
@@ -12,6 +13,7 @@ if (isSwEnabled) {
     ServiceWorkerUtility.register();
 }
 
+Button.register();
 GameSettings.register();
 Menu.register();
 ScreenSwitcher.register();
@@ -61,7 +63,6 @@ game.addEventListener('gameEndedProperly', () => {
     gameSettings.saveSettings();
 });
 
-document.addEventListener('beforeinstallprompt', console.log.bind(null, 'beforeinstallprompt!'));
 
 const idleId = requestIdleCallback(() => {
     root.classList.remove('initing');
