@@ -60,7 +60,7 @@ export class Game extends HTMLDivElement {
         buttons.insertAdjacentHTML(
             'afterbegin',
             this.#state.settings.sequences.map((seq, idx) =>
-                `<button type="button" data-sequence-name="${seq}" data-sequence-idx="${idx + 1}" disabled>${seq.toLowerCase()}</button>`
+                `<button is="n-button" type="button" data-sequence-name="${seq}" data-sequence-idx="${idx + 1}" disabled>${seq.toLowerCase()}</button>`
             ).join('')
         );
         buttons.addEventListener('click', this.#onButtonClick);
