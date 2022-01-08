@@ -68,6 +68,10 @@ export class Game extends HTMLDivElement {
 
     #onButtonClick = event => {
         if (event.target.nodeName === 'BUTTON' && event.target.dataset.sequenceName) {
+            if (navigator.vibrate) {
+                navigator.vibrate(80);
+            }
+
             this.#makeGuess(event.target.dataset.sequenceName);
 
             event.target.disabled = true;
