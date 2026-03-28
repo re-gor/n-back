@@ -27,5 +27,5 @@ visit https://localhost → Advanced → Proceed, then go to chrome://flags/#all
 
 Then
 ```bash
-sudo npm start
+npm start
 ```
