@@ -43,11 +43,14 @@ export class Game extends HTMLDivElement {
 
     #makeGuess(sequenceName) {
         const seq = this.#state.sequences[sequenceName];
+        this.#state.guessed = true;
 
         if (seq[this.#state.iteration - this.#state.settings.n - 1] === seq[this.#state.iteration - 1]) {
             this.#state.userScore += 1;
+            this.#state.rightCount += 1;
         } else {
             this.#state.userScore -= 1
+            this.#state.wrongCount += 1;
         }
     }
 
@@ -131,6 +134,10 @@ export class Game extends HTMLDivElement {
 
             this.#state.actualScore += Number(isRight);
 
+            if (!this.#state.guessed && isRight) {
+                this.#state.missCount += 1;
+            }
+
             switch (name) {
                 case SEQUENCE.COLOR:
                     classes += ` color_${seq[iteration]}`;
@@ -159,6 +166,7 @@ export class Game extends HTMLDivElement {
         }
 
         ++this.#state.iteration;
+        this.#state.guessed = false;
     }
 
     #replay() {
@@ -221,6 +229,10 @@ export class Game extends HTMLDivElement {
             iteration: 0,
             userScore: 0,
             actualScore: 0,
+            rightCount: 0,
+            wrongCount: 0,
+            missCount: 0,
+            guessed: false,
             intervalId: null,
         }
 
@@ -251,6 +263,9 @@ export class Game extends HTMLDivElement {
             importTemplateFromCache(
                 import.meta.url, {
                     props: {
+                        rightCount: this.#state.rightCount,
+                        wrongCount: this.#state.wrongCount,
+                        missCount: this.#state.missCount,
                         userScore: this.#state.userScore,
                         actualScore: this.#state.actualScore,
                         score: this.#getScore(),
