@@ -5,23 +5,23 @@
         <table>
             <tbody>
                 <tr>
-                    <td>N</td>
+                    <td>N<button is="n-tooltip-button" type="button" tooltip="How many steps back to match. N=2 means you compare the current stimulus to the one 2 turns ago. Higher values are harder.">?</button></td>
                     <td><input type="number" min="1" max="30" name="n" required /></td>
                 </tr>
                 <tr>
-                    <td>Length</td>
+                    <td>Length<button is="n-tooltip-button" type="button" tooltip="Total number of turns per game round.">?</button></td>
                     <td><input type="number" min="1" max="100" name="length" required /></td>
                 </tr>
                 <tr>
-                    <td>Turn time (sec)</td>
+                    <td>Turn time (sec)<button is="n-tooltip-button" type="button" tooltip="How long each turn lasts in seconds before advancing automatically.">?</button></td>
                     <td><input type="number" min="1" max="15" name="turnTime" step="0.01" required /></td>
                 </tr>
                 <tr>
-                    <td>Probability</br>multiplier</td>
+                    <td>Probability</br>multiplier<button is="n-tooltip-button" type="button" tooltip="Multiplier for how often a matching stimulus appears. Higher values give more matches to respond to.">?</button></td>
                     <td><input type="number" min="1" max="20" name="probMulti" required /></td>
                 </tr>
                 <tr>
-                    <td>Show right answers</td>
+                    <td>Show right answers<button is="n-tooltip-button" type="button" tooltip="Highlight correct answers after each turn so you can learn from mistakes.">?</button></td>
                     <td>
                         <input type="checkbox" id="show-right-answers" name="showRightAnswers" />
                         <label for="show-right-answers">
@@ -30,7 +30,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="4">Sequences</td>
+                    <td rowspan="4">Sequences<button is="n-tooltip-button" type="button" tooltip="Which stimulus types to include. Position tracks grid location, Color tracks the cell color, Shape tracks letters or digits shown.">?</button></td>
                 <tr>
                     <td>
                         <input type="checkbox" id="sequence-position" value="position" name="sequences" />
