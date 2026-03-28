@@ -1,0 +1,32 @@
+.tooltip-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    box-sizing: border-box;
+    padding: var(--gap-medium);
+    background-color: #fff;
+    border-top: 1px solid grey;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--gap-medium);
+    font-size: var(--basic-font-size);
+    z-index: 1000;
+}
+
+.tooltip-popup[hidden] {
+    display: none;
+}
+
+.tooltip-popup__text {
+    flex: 1;
+}
+
+.tooltip-popup__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    padding: 0;
+    line-height: 1;
+}

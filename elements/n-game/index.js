@@ -4,6 +4,8 @@ import { Storage } from '../../utils/storage.js';
 await importTemplate(import.meta.url, {props: {}});
 await importTemplate(import.meta.url, {props: {}, path: './score.html'});
 
+const {isVibrationEnabled} = Storage.getAppSettings();
+
 export const SEQUENCE = {
     POSITION: 'POSITION',
     COLOR: 'COLOR',
@@ -20,7 +22,7 @@ export class Game extends HTMLDivElement {
     static #defaultSettings = {
         turnTime: 5, // sec
         length: 4, // actual length is length + N - 1;
-        probMulti: 0, // how more frequently match will be triggered
+        probMulti: 1, // how frequent match will be triggered
         n: 1,
         showRightAnswers: false,
         sequences: [SEQUENCE.POSITION, SEQUENCE.COLOR, SEQUENCE.DIGITS]
@@ -41,11 +43,14 @@ export class Game extends HTMLDivElement {
 
     #makeGuess(sequenceName) {
         const seq = this.#state.sequences[sequenceName];
+        this.#state.guessed = true;
 
         if (seq[this.#state.iteration - this.#state.settings.n - 1] === seq[this.#state.iteration - 1]) {
             this.#state.userScore += 1;
+            this.#state.rightCount += 1;
         } else {
             this.#state.userScore -= 1
+            this.#state.wrongCount += 1;
         }
     }
 
@@ -68,7 +73,7 @@ export class Game extends HTMLDivElement {
 
     #onButtonClick = event => {
         if (event.target.nodeName === 'BUTTON' && event.target.dataset.sequenceName) {
-            if (navigator.vibrate) {
+            if (navigator.vibrate && isVibrationEnabled) {
                 navigator.vibrate(80);
             }
 
@@ -129,6 +134,10 @@ export class Game extends HTMLDivElement {
 
             this.#state.actualScore += Number(isRight);
 
+            if (!this.#state.guessed && isRight) {
+                this.#state.missCount += 1;
+            }
+
             switch (name) {
                 case SEQUENCE.COLOR:
                     classes += ` color_${seq[iteration]}`;
@@ -157,6 +166,7 @@ export class Game extends HTMLDivElement {
         }
 
         ++this.#state.iteration;
+        this.#state.guessed = false;
     }
 
     #replay() {
@@ -219,6 +229,10 @@ export class Game extends HTMLDivElement {
             iteration: 0,
             userScore: 0,
             actualScore: 0,
+            rightCount: 0,
+            wrongCount: 0,
+            missCount: 0,
+            guessed: false,
             intervalId: null,
         }
 
@@ -249,6 +263,9 @@ export class Game extends HTMLDivElement {
             importTemplateFromCache(
                 import.meta.url, {
                     props: {
+                        rightCount: this.#state.rightCount,
+                        wrongCount: this.#state.wrongCount,
+                        missCount: this.#state.missCount,
                         userScore: this.#state.userScore,
                         actualScore: this.#state.actualScore,
                         score: this.#getScore(),
@@ -331,7 +348,7 @@ function generateSequenceFromItems(items, len, n, pm) {
     const result = new Array(len);
 
     for (let i = 0; i < len; ++i) {
-        const elementPreIdx = randomInt(items.length + (i >= n ? pm : 0));
+        const elementPreIdx = randomInt(items.length + (i >= n ? pm - 1 : 0));
 
         result[i] =  elementPreIdx >= items.length ? result[i - n] : items[elementPreIdx];
     }

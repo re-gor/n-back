@@ -1,3 +1,5 @@
+@import url('../n-tooltip-button/styles.css');
+
 form table td {
     vertical-align: top;
     padding: var(--gap-little) var(--gap-little) 0;

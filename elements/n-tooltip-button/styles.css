@@ -1,0 +1,14 @@
+[is="n-tooltip-button"] {
+    font-size: 0.75rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    border: 1px solid grey;
+    background: none;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-left: var(--gap-little);
+    padding: 0;
+    line-height: 1;
+    color: grey;
+}

@@ -1,4 +1,5 @@
 @import url('./elements/n-button/styles.css');
+@import url('./elements/n-tooltip-popup/styles.css');
 
 html {
     font-size: 14px;

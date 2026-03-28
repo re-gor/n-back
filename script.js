@@ -6,6 +6,8 @@ import {Stat} from './elements/n-statistics/index.js';
 import {GameSettings} from './elements/n-game-settings/index.js';
 import {Settings} from './elements/n-settings/index.js';
 import {Button} from './elements/n-button/index.js';
+import {TooltipButton} from './elements/n-tooltip-button/index.js';
+import {TooltipPopup} from './elements/n-tooltip-popup/index.js';
 import {Storage} from './utils/storage.js';
 
 const {isEnabled: isSwEnabled} = Storage.getServiceWorkerSettings();
@@ -14,6 +16,8 @@ if (isSwEnabled) {
 }
 
 Button.register();
+TooltipButton.register();
+TooltipPopup.register();
 GameSettings.register();
 Menu.register();
 ScreenSwitcher.register();
