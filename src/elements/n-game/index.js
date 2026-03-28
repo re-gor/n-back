@@ -4,6 +4,8 @@ import { Storage } from '../../utils/storage.js';
 await importTemplate(import.meta.url, {props: {}});
 await importTemplate(import.meta.url, {props: {}, path: './score.html'});
 
+const {isVibrationEnabled} = Storage.getAppSettings();
+
 export const SEQUENCE = {
     POSITION: 'POSITION',
     COLOR: 'COLOR',
@@ -20,7 +22,7 @@ export class Game extends HTMLDivElement {
     static #defaultSettings = {
         turnTime: 5, // sec
         length: 4, // actual length is length + N - 1;
-        probMulti: 0, // how more frequently match will be triggered
+        probMulti: 1, // how frequent match will be triggered
         n: 1,
         showRightAnswers: false,
         sequences: [SEQUENCE.POSITION, SEQUENCE.COLOR, SEQUENCE.DIGITS]
@@ -68,7 +70,7 @@ export class Game extends HTMLDivElement {
 
     #onButtonClick = event => {
         if (event.target.nodeName === 'BUTTON' && event.target.dataset.sequenceName) {
-            if (navigator.vibrate) {
+            if (navigator.vibrate && isVibrationEnabled) {
                 navigator.vibrate(80);
             }
 
@@ -331,7 +333,7 @@ function generateSequenceFromItems(items, len, n, pm) {
     const result = new Array(len);
 
     for (let i = 0; i < len; ++i) {
-        const elementPreIdx = randomInt(items.length + (i >= n ? pm : 0));
+        const elementPreIdx = randomInt(items.length + (i >= n ? pm - 1 : 0));
 
         result[i] =  elementPreIdx >= items.length ? result[i - n] : items[elementPreIdx];
     }

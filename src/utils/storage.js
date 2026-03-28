@@ -6,7 +6,7 @@ export class Storage {
 
         try {
             const raw = localStorage.getItem(key);
-            
+
             if (raw) {
                 item = JSON.parse(raw);
             }
@@ -24,8 +24,8 @@ export class Storage {
     static getGameSettings() {
         return Storage.#getItem('gameSettings', {
             n: 1,
-            probMulti: 0,
-            turnTime: 5,
+            probMulti: 1,
+            turnTime: 3,
             length: 15,
             sequences: [SEQUENCE.POSITION, SEQUENCE.COLOR],
             showRightAnswers: false,

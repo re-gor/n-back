@@ -20,24 +20,24 @@ export class Button extends HTMLButtonElement {
         Button.#isDefined = true;
 
     }
-    
+
     #readAttributes() {
         const _vibration = this.getAttribute('vibration');
         if (_vibration) {
             this.vibration = _vibration.split(' ').map(Number);
         }
-        
+
         const _disableVibration = this.getAttribute('disable-vibration');
         if (_disableVibration) {
-            this.disableVibration = _disableVibration.split(' ').map(Number);        
+            this.disableVibration = _disableVibration.split(' ').map(Number);
         }
     }
-    
+
     #clickHandler = (event) => {
         if (navigator.vibrate) {
             if (this.disabled) {
                 navigator.vibrate(this.disableVibration);
-                console.log('disble bipping', this.disableVibration)
+                console.log('disable bipping', this.disableVibration)
             } else {
                 navigator.vibrate(this.vibration);
                 console.log('bipping', this.vibration)
@@ -48,7 +48,7 @@ export class Button extends HTMLButtonElement {
             event.stopPropagation();
         }
     }
-    
+
     #bindEventListeners() {
         if (isVibrationEnabled) {
             this.#readAttributes();
@@ -60,7 +60,7 @@ export class Button extends HTMLButtonElement {
     connectedCallback() {
         this.vibration = Button.#defaultVibration;
         this.disableVibration = Button.#defaultDisableVibration;
-        
+
         const overlay = document.createElement('span');
         overlay.classList.add('disable-overlay');
         this.appendChild(overlay);
